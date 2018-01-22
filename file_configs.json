@@ -1,0 +1,41 @@
+[
+    {
+        "check_date": true,
+        "file_path": {
+            "input": "http://www.bcb.gov.br/pec/Indeco/Ingl/ie5-24i.xlsx",
+            "output": "output1.csv"
+        },
+        "header_properties": {
+            "prefix": "BCB",
+            "remove_line_from_headers": [
+                "(",
+                ")",
+                "+",
+                "="
+            ]
+        },
+        "last_saved_date": "2017-12-22",
+        "offset": {
+            "bottom": 8,
+            "header": 12,
+            "top": 5
+        }
+    },
+    {
+        "check_date": false,
+        "file_path": {
+            "input": "http://www.bcb.gov.br/pec/Indeco/Ingl/ie5-26i.xlsx",
+            "output": "output2.csv"
+        },
+        "header_properties": {
+            "prefix": "BCB",
+            "remove_line_from_headers": []
+        },
+        "last_saved_date": "2017-11-01",
+        "offset": {
+            "bottom": 4,
+            "header": 10,
+            "top": 5
+        }
+    }
+]

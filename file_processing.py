@@ -1,3 +1,22 @@
+# -*- coding: utf-8 -*-
+"""This file contains the file_processing class, which process the file with
+given configration and saves the output. To run this object I have used
+configrations saved in json object, which can be replaced by a database such as
+sql or can be stored in any othe format.
+
+Example:
+    To run this file we just need to call:
+        $ python file_processing.py
+
+This call checks for json file and configration present in that. Then it creates
+    - ProcessFile object
+    - downloads the file
+    - open it using xlrd
+    - process it from last_saved_date
+    - save the result in output file
+    - and updates json file with last date processed
+
+"""
 
 import re
 import csv
@@ -25,8 +44,33 @@ month_dict = {
 
 
 class ProcessFile(object):
-    """Process only the new records since last update and save them in an
-    output file."""
+    """This is ProcessFile class, it process the file according to
+    configrations provided to it. Runs after providing following parameters.
+
+    Args:
+
+        file_path (dict): Contains input and output path.
+            - input: url of the file to be processed.
+            - output: location of the output file.
+
+        header_properties (dict):
+            - prefix: provide if you want add prefix to header string else leave
+             it empty string.
+            - remove_line_from_headers: provide values in form of list, it does
+            not add that row which contains these special characters in them. if
+            you don't want to remove anything leave it blank.
+
+
+        offset (dict):
+            - top: To ignore number of rows from top.
+            - bottom: To ignore number of rows from bottom.
+            - header: To tell number of row where header ends.
+
+        check_date (bool): If the file has date till numbers.
+
+        last_saved_date (string): To provide output from this date.
+
+    """
 
     def __init__(
             self,
@@ -70,9 +114,9 @@ class ProcessFile(object):
         return str(last_date_processed.date())
 
     def download_file(self):
-        """download file from the link to the present folder"""
+        """download file from the link to the present folder."""
 
-        file_name = self.file_path.get('input').split("/")[-1]
+        file_name = self.file_path.get('input').split('/')[-1]
         response = requests.get(self.file_path.get('input'))
         with open(file_name, 'w') as output_file_obj:
             output_file_obj.write(response.content)
@@ -102,7 +146,7 @@ class ProcessFile(object):
 
                 remove_line_from_headers = '|'.join(
                     '\\' + _ for _ in self.header_properties.get(
-                        "remove_line_from_headers"))
+                        'remove_line_from_headers'))
 
                 if (remove_line_from_headers and
                         re.findall(remove_line_from_headers, data)):
@@ -159,8 +203,8 @@ class ProcessFile(object):
 
 
 if __name__ == '__main__':
-    with open('file_configs.json', 'r') as file_obj:
 
+    with open('file_configs.json', 'r') as file_obj:
         file_configrations = json.load(file_obj, object_pairs_hook=OrderedDict)
 
     for file_config in file_configrations:
